@@ -1,0 +1,427 @@
+1.	Write a procedure to accept a string and print all characters in separate lines.
+Input: - Ram
+Output: - R
+                 a
+                 m
+drop procedure if exists pro1;
+delimiter $
+create procedure pro1(name varchar(45))
+BEGIN
+declare x int;
+declare z varchar(45);
+set z:="";
+set x:=1;
+l1:LOOP
+if x>length(name) then
+leave l1;
+end if;
+set z:=substr(name,x,1);
+select z as output;
+ set x:=x+1;
+end loop l1;
+end $
+delimiter ;
+
+2.	Write a procedure to accept a string and print every character separated by a comm sign.
+Input: - SALEEL
+Output: - S, A, L, E, E, L
+drop procedure if exists pro2;
+delimiter $
+create procedure pro2(name varchar(45))
+BEGIN
+declare z varchar(45);
+declare x int;
+set z:=substr(name,1,1);
+set x:=2;
+l1:LOOP
+if x>length(name) then
+leave l1;
+end if;
+set z:=concat(z,",",substr(name,x,1));
+--  select z as output;
+set x=x+1;
+end loop l1;
+select z as output;
+end $
+delimiter ;
+
+3.	Write a procedure to accept an alpha numeric string and separate number and characters of the string.
+Input: - SAL1234EEL
+Output: - SALEEL
+                 1234
+drop procedure if exists pro1;
+delimiter $
+create procedure pro1(in x varchar(20))
+BEGIN
+declare y varchar(20);
+declare num varchar(20);
+declare strn varchar(20);
+declare z int;
+set strn="";
+set z:=1;
+set num="";
+
+lbl1:loop
+  set y:=substr(x,z,1);
+  set z=z+1;
+  if ascii(y)>48 and ascii(y)<57  THEN
+    set num:=concat(num,y);
+  ELSE
+     set strn=concat(strn,y);
+  end if;
+  
+  if z>length(x) THEN
+   leave lbl1;
+   end if;
+end loop lbl1;
+
+select strn;
+select num;
+end $
+delimiter ;
+
+
+
+4.	Write a procedure to print all employee name and his job in following format.
+Input: - KING  PRESIDENT
+              SCOTT  ANALYST
+Output: - K(ING) is PRESIDENT
+                 S(COTT) is ANALYST
+drop procedure if exists pro1;
+delimiter $
+create procedure pro1(in x varchar(20))
+BEGIN
+declare y int;
+declare z varchar(20);
+declare output varchar(20);
+declare a varchar(20);
+declare b varchar(20);
+declare d varchar(20);
+
+set y:=1;
+
+set output:="";
+
+lbl1:loop
+set z:=substr(x,y,1);
+set y:=y+1;
+
+if z=" " then
+leave lbl1;
+END IF;
+
+set output:=concat(output,z); 
+end loop lbl1;
+
+
+set a:=substr(output,1,1);  
+set b:=substr(output,2,length(output)); 
+
+
+set d:=substr(x,length(output)+1,length(x));
+select concat(a,"(",b,")"," is ",d) as output;
+
+end $
+delimiter ;
+
+5.	Write a procedure to print all upper and lower characters separately. 
+Input: - AbCddEfG
+Output: - ACEG
+                  bdf
+drop procedure if exists pro1;
+delimiter $
+create procedure pro1(in x varchar(20))
+BEGIN
+declare y varchar(20);
+declare CAP varchar(20);
+declare small varchar(20);
+declare z int;
+set CAP="";
+set z:=1;
+set small="";
+
+lbl1:loop
+  set y:=substr(x,z,1);
+  set z=z+1;
+  if ascii(y)>=65 and ascii(y)<=90  THEN
+    set CAP:=concat(CAP,y);
+  ELSE
+     set small=concat(small,y);
+  end if;
+  
+  if z>length(x) THEN
+   leave lbl1;
+   end if;
+end loop lbl1;
+
+select CAP;
+select small;
+end $
+delimiter ;
+
+
+6.	Write a procedure to find the number of vowels, digits and white spaces 
+
+
+7.	Write a procedure to remove all characters in a string except alphabets
+Input: - saleel.bagde123@gmail.com
+Output: - saleelbagdegmailcom
+drop procedure if exists pro1;
+delimiter $
+create procedure pro1(in x varchar(20))
+BEGIN
+declare y varchar(20);
+declare email varchar(20);
+declare z int;
+
+set z:=1;
+set email="";
+
+lbl1:loop
+  set y:=substr(x,z,1);
+  set z=z+1;
+  if ascii(y)>=97 and ascii(y)<=122  THEN   -- if y between ‘a’ and ‘z‘ THEN
+    set email:=concat(email,y);
+
+  end if;
+  
+  if z>length(x) THEN
+   leave lbl1;
+   end if;
+end loop lbl1;
+
+select email;
+
+end $
+delimiter ;
+
+8.	Write a procedure to insert 10 rows in a table having following columns (using loop).
+R (id int, message varchar(20)).
+Output: -
+id     message
+---- -----------
+1   	  i is odd
+2     i is even
+3     i is odd
+4     i is even
+5     i is odd
+6     i is even
+7     i is odd
+8     i is even
+9     i is odd
+10   i is even
+drop procedure if exists pro1;
+delimiter $
+create procedure pro1()
+
+BEGIN
+declare id int;
+declare msg varchar(20);
+set msg="";
+set id=1;
+
+label1:LOOP
+if ((id%2)=0) THEN
+set msg:= "i is even";
+insert into p8 values (id,msg);
+else 
+set msg:="i is odd";
+insert into p8 values (id,msg);
+end if;
+set id=id+1;
+if id>10 THEN
+leave label1;
+end if;
+end loop label1;
+
+end $
+delimiter ;
+
+9.	Write a procedure to print five highest paid employees from the emp table using cursor.
+
+
+10.	Create the following table named (emp10, emp20, and emp30) which have the same structure of emp table.
+Write a procedure to split employee records from emp table according to their department numbers and insert those records in the appropriate table using cursor.
+
+
+11.	Write a procedure to display the department number and employee name in the following format.
+Output: -
+10 -> (AARAV, THOMAS, CLARK, KING, MILLER)
+20 -> (SHARMIN, BANDISH, SMITH, JONES, SCOTT, FRED, ADAMS, FORD)
+30 -> (GITA, ALLEN, WARD, MARTIN, BLAKE, TURNER, JAMES, HOFFMAN, GRASS)
+40 –> (No employee work in department 40…)
+50 -> (VRUSHALI, SANGITA, SUPRIYA)
+
+
+12.	Write a procedure to accept customer number and display all his order. (Use customers and orders table)
+
+
+13.	Write a procedure to convert numbers into word
+Input: - 45234
+Output: - Four Five Two Three Four
+DROP PROCEDURE IF EXISTS pro1;
+DELIMITER $
+
+CREATE PROCEDURE pro1(IN number INT(10))
+BEGIN
+    DECLARE i INT(10);
+    DECLARE z INT;
+    DECLARE output VARCHAR(50);
+    DECLARE units VARCHAR(10);
+    SET i = 0;
+    SET units = "";
+    SET output = "";
+    SET z = 0;
+    
+    lb: LOOP
+        SET z = z+1;
+        IF z > LENGTH(number) THEN
+            LEAVE lb;
+        END IF;
+        
+        SET i = SUBSTR(number, z, 1);
+
+        IF i = 0 THEN
+            SET units = "Zero";
+        ELSEIF i = 9 THEN
+            SET units = "nine";
+        ELSEIF i = 8 THEN
+            SET units = "eight";
+        ELSEIF i = 7 THEN
+            SET units = "seven";
+        ELSEIF i = 6 THEN
+            SET units = "six";
+        ELSEIF i = 5 THEN
+            SET units = "five";
+        ELSEIF i = 4 THEN
+            SET units = "four";
+        ELSEIF i = 3 THEN
+            SET units = "three";
+        ELSEIF i = 2 THEN
+            SET units = "two";
+        ELSEIF i = 1 THEN
+            SET units = "one";
+        END IF;
+        
+        SET output = CONCAT(output, units, " ");
+    END LOOP lb;
+    
+    SELECT output AS "Output";
+END $
+
+DELIMITER ;
+
+14.	Write a procedure to find the sum of digits.
+Input: - 5675
+Output: - Twenty Three
+
+
+15.	Write a procedure to find how many “Sundays” are present between two given dates.
+Input: - Date1 and Date2
+Output: - 3 Sunday’s
+
+
+16.	Writer a procedure which will accept date and weekday name from the user and print upcoming date on than weekday
+Input: - (‘2023-04-26’, ‘Saturday’)
+Output: - ‘2023-04-29’ 
+
+
+
+1.	Create a LOGIN table (username, password, and email). Write a procedure (named addUser) to pass the username, password, and email-ID through the procedure and store the data in the LOGIN table.
+DROP PROCEDURE IF EXISTS addUser;
+delimiter $
+
+CREATE PROCEDURE addUser(user_nm varchar(20),em VARCHAR(20), pass VARCHAR(15) )
+BEGIN
+	INSERT INTO login VALUES(user_nm,em,pass);
+end $
+delimiter ;
+
+mysql> call addUser('ritesh','ritz@gmail.com','rrr');
+
+2.	Create a LOG table having following columns (id (auto_increment), curr_date, curr_time, and message). Write a procedure (named checkUser) to pass the email-ID as an input, check whether passed email-ID is available in LOGIN table or not available. If the email-ID is available then display the username and his password. If the email-ID is not available then, insert (curr_date, curr_time, and message) in LOG table.
+drop PROCEDURE if EXISTS checkUser ;
+delimiter $
+create PROCEDURE checkUser (em varchar(30))
+BEGIN
+	set @e := em;
+	
+	SELECT email into @x from login where email=em;
+	IF (@x =em ) THEN
+		select username,pwd from login where email=em;
+	ELSE
+		select "New user found...";
+		set @i := "INSERT INTO log(cur_date,cur_time,message) VALUES(CURRENT_DATE(),CURRENT_TIME(),?)";
+		prepare z from @i;
+		EXECUTE z using @e;
+	end IF;
+end $
+delimiter ;
+
+3.	Write a procedure(named getQualification) that takes studentID as a parameter. If studentID is present in the student table, then print his student details along with STUDENT_QUALIFICATION details and if the studentID is not present display message “Student not found…” (Use: STUDENT, and STUDENT_QUALIFICATION tables)
+drop procedure if EXISTS getQualification;
+delimiter $
+create procedure getQualification(_studentid int )
+begin 
+	SELECT distinct s.id into @x from student s natural join student_qualifications sq WHERE s.id=_studentid;
+	IF  @x = _studentid THEN
+		select * from student s join student_qualifications sq on s.id=sq.studentid WHERE s.id=_studentid;
+	ELSE 
+		select "Student not found…";
+	end if;
+end $
+delimiter ;
+
+4.	Write a procedure (named addStudent) that inserts a new student with his phone number and his address into the STUDENT, PHONE, and ADDRESS table.
+drop procedure if EXISTS addStudent;
+delimiter $
+create procedure addStudent(_id int ,_namefirst varchar(20) ,_namelast varchar(30),_dob date,
+        _emailid varchar(30),_num varchar(30),_address varchar(30))
+BEGIN 
+	insert INTO student values(_id,_namefirst,_namelast,_dob,_emailid);
+	select max(id) into @nxt from student_phone ; 
+	
+	insert INTO student_phone values(@nxt+1,_id,_num,1);
+	
+	select max(id) into @nxt from student_address ; 
+	insert INTO student_address values(@nxt+1,_id,_address);
+end $
+delimiter ;
+
+	call addStudent(29,'omkar','Divate','2001-05-29','omkar@gamil.com','Yeola');
+
+5.	Write a procedure (named addQualification) that takes studentID, and qualification details as a parameter. If studentID is present in the STUDENT table, then insert the qualification in STUDENT_QUALIFICATION table and return a message “Record inserted” or else print ‘Student not found’. (hint: using OUT parameter) (Use: STUDENT, and STUDENT_QUALIFICATION tables)
+drop procedure if EXISTS addQualification;
+delimiter $
+create procedure addQualification(_studentid int, _degree varchar(10), _college varchar(10), 
+		_university varchar (10), _marks varchar (10), _years int)
+BEGIN
+	SELECT true into @ch from student where id=_studentid;
+	IF @ch THEN
+		SELECT count(*) INTO @i from student_qualifications;
+		INSERT INTO student_qualifications VALUES(@i+1,_studentid,_degree,_college,_university,_marks,_years);
+		select 'insert successfully' status;
+	ELSE
+		select 'student not fount...' status ;
+	end if;
+end $
+delimiter ;
+	call addQualification(30,'BE','RHSapat','SPPU',95,2023);
+	call addQualification(29,'ME','RHSapat','SPPU',95,2025);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
